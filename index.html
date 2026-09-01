@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1211">
+<meta name="robots" content="noindex, nofollow">
+<title>Karriere — Fussball Lebenssimulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/gate.css">
+</head>
+<body class="is-locked">
+
+<!-- ── Zugangssperre ──────────────────────────────────────────────────
+     Die gültigen Codes stehen ganz oben in js/core/gate.js.        -->
+<div id="gate" class="gate" hidden>
+  <div class="gate-card">
+    <div class="gate-mark" aria-hidden="true"></div>
+    <h1 class="gate-title">Karriere</h1>
+    <p class="gate-sub">Diese Seite ist nicht öffentlich. Bitte den Zugangscode eingeben.</p>
+    <div class="gate-field">
+      <input id="gate-input" class="gate-input" type="text"
+             placeholder="Zugangscode" autocomplete="off" autocapitalize="characters"
+             spellcheck="false" aria-label="Zugangscode">
+      <button id="gate-btn" class="gate-btn" type="button">Weiter</button>
+    </div>
+    <p id="gate-msg" class="gate-msg" role="status" aria-live="polite"></p>
+    <p class="gate-foot">Der Code wird auf diesem Gerät gemerkt.</p>
+  </div>
+</div>
+
+<div id="app">
+  <header id="topbar" hidden>
+    <button class="tb-brand" id="tb-home" type="button">
+      <span class="tb-dot"></span><span class="tb-name" id="tb-player">—</span>
+    </button>
+    <div class="tb-mid" id="tb-mid"></div>
+    <div class="tb-right">
+      <button class="tb-btn" id="tb-lang" type="button">DE</button>
+      <button class="tb-btn" id="tb-menu" type="button" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <main id="screen" class="screen"></main>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay-sheet" id="overlay-sheet"></div>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     Programmteile — Reihenfolge ist verbindlich.
+
+     Bewusst `data-src` statt `src`: So lädt der Browser hier noch
+     nichts. Erst wenn der Zugangscode stimmt, macht gate.js daraus
+     echte <script src>-Elemente (in genau dieser Reihenfolge). Wer
+     keinen Code hat, bekommt den Spielcode gar nicht erst geliefert.
+     ══════════════════════════════════════════════════════════════════ -->
+
+<!-- ── Core ───────────────────────────────────────────────────────────── -->
+<script data-src="js/core/errors.js"></script>
+<script data-src="js/core/rng.js"></script>
+<script data-src="js/core/i18n.js"></script>
+<script data-src="js/core/state.js"></script>
+<script data-src="js/core/save.js"></script>
+
+<!-- ── Sprachen ───────────────────────────────────────────────────────── -->
+<script data-src="i18n/de.js"></script>
+<script data-src="i18n/en.js"></script>
+<script data-src="i18n/de.pro.js"></script>
+<script data-src="i18n/en.pro.js"></script>
+<script data-src="i18n/de.voices.js"></script>
+<script data-src="i18n/en.voices.js"></script>
+<script data-src="i18n/de.mentor.js"></script>
+<script data-src="i18n/en.mentor.js"></script>
+<script data-src="i18n/de.start.js"></script>
+<script data-src="i18n/en.start.js"></script>
+<script data-src="i18n/de.potential.js"></script>
+<script data-src="i18n/en.potential.js"></script>
+<script data-src="i18n/de.chains.js"></script>
+<script data-src="i18n/en.chains.js"></script>
+
+<!-- ── Daten ──────────────────────────────────────────────────────────── -->
+<script data-src="data/positions.js"></script>
+<script data-src="data/nations.js"></script>
+<script data-src="data/flags.js"></script>
+<script data-src="data/names.js"></script>
+<script data-src="data/leagues.js"></script>
+<script data-src="data/clubs.js"></script>
+<script data-src="data/competitions.js"></script>
+<script data-src="data/youth.js"></script>
+<script data-src="data/traits.js"></script>
+<script data-src="data/voices.js"></script>
+<script data-src="data/mentors.js"></script>
+<script data-src="data/events/events.youth.js"></script>
+<script data-src="data/events/events.start.js"></script>
+<script data-src="data/events/events.potential.js"></script>
+<script data-src="data/events/events.chains.js"></script>
+<script data-src="data/events/events.pro.js"></script>
+
+<!-- ── Engine ─────────────────────────────────────────────────────────── -->
+<script data-src="js/engine/attributes.js"></script>
+<script data-src="js/engine/growth.js"></script>
+<script data-src="js/engine/effects.js"></script>
+<script data-src="js/engine/events.js"></script>
+<script data-src="js/engine/season.js"></script>
+<script data-src="js/engine/world.js"></script>
+<script data-src="js/engine/national.js"></script>
+<script data-src="js/engine/kit.js"></script>
+<script data-src="js/engine/transfer.js"></script>
+<script data-src="js/engine/career.js"></script>
+
+<!-- ── UI ─────────────────────────────────────────────────────────────── -->
+<script data-src="js/ui/components.js"></script>
+<script data-src="js/ui/trophyart.js"></script>
+<script data-src="js/ui/art.js"></script>
+<script data-src="js/ui/celebrate.js"></script>
+<script data-src="js/ui/router.js"></script>
+<script data-src="js/ui/screens/menu.js"></script>
+<script data-src="js/ui/screens/create.js"></script>
+<script data-src="js/ui/screens/story.js"></script>
+<script data-src="js/ui/screens/hub.js"></script>
+<script data-src="js/ui/screens/trophies.js"></script>
+<script data-src="js/ui/screens/tables.js"></script>
+<script data-src="js/ui/screens/retire.js"></script>
+<script data-src="js/ui/screens/settings.js"></script>
+<script data-src="js/ui/screens/admin.js"></script>
+
+<script data-src="js/main.js"></script>
+
+<!-- Die Sperre selbst lädt normal — sie ist das Einzige, was sofort läuft -->
+<script src="js/core/gate.js"></script>
+</body>
+</html>

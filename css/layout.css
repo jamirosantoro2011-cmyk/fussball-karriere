@@ -1,0 +1,95 @@
+/* ── App-Shell & Screens ───────────────────────────────────────────── */
+
+#app{ min-height:100dvh; display:flex; flex-direction:column; }
+
+#topbar{
+  position:sticky; top:0; z-index:40;
+  height:var(--topbar-h);
+  display:flex; align-items:center; gap:var(--sp-3);
+  padding:0 var(--sp-4);
+  padding-top: env(safe-area-inset-top);
+  background:rgba(10,15,14,.82);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft);
+}
+.tb-brand{
+  display:flex; align-items:center; gap:var(--sp-2);
+  background:none; border:0; padding:0; cursor:pointer; min-width:0;
+}
+.tb-dot{ width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); flex:none; }
+.tb-name{ font-family:var(--font-head); font-weight:800; font-size:.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:40vw; }
+.tb-mid{ flex:1; display:flex; gap:var(--sp-3); justify-content:center; font-size:.78rem; color:var(--text-2); font-variant-numeric:tabular-nums; }
+.tb-mid b{ color:var(--text); font-weight:700; }
+.tb-right{ display:flex; gap:var(--sp-2); margin-left:auto; }
+.tb-btn{
+  background:var(--card); border:1px solid var(--line); color:var(--text-2);
+  border-radius:999px; padding:5px 11px; font-size:.75rem; font-weight:700;
+  cursor:pointer; transition:.15s var(--ease);
+}
+.tb-btn:hover{ color:var(--text); border-color:var(--accent); }
+
+.screen{
+  flex:1;
+  width:100%; max-width:var(--maxw);
+  margin:0 auto;
+  padding:var(--sp-5) var(--sp-4) calc(var(--sp-7) + env(safe-area-inset-bottom));
+  animation:screen-in .32s var(--ease);
+}
+@keyframes screen-in{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+
+.stack{ display:flex; flex-direction:column; gap:var(--sp-4); }
+.stack-sm{ display:flex; flex-direction:column; gap:var(--sp-2); }
+.row{ display:flex; gap:var(--sp-3); align-items:center; }
+.row-between{ display:flex; gap:var(--sp-3); align-items:center; justify-content:space-between; }
+.grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-3); }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-2); }
+.spacer{ flex:1; }
+
+.section-title{
+  display:flex; align-items:center; gap:var(--sp-3);
+  margin:var(--sp-5) 0 var(--sp-2);
+}
+.section-title::after{ content:''; flex:1; height:1px; background:var(--line-soft); }
+.section-title:first-child{ margin-top:0; }
+
+/* Sticky Aktionsleiste (Daumenreichweite auf dem Handy) */
+.actionbar{
+  position:sticky; bottom:0; z-index:30;
+  margin:var(--sp-5) calc(var(--sp-4) * -1) calc(var(--sp-4) * -1);
+  padding:var(--sp-3) var(--sp-4) calc(var(--sp-3) + env(safe-area-inset-bottom));
+  background:linear-gradient(to top, var(--bg) 55%, rgba(10,15,14,0));
+  display:flex; gap:var(--sp-3);
+}
+.actionbar .btn{ flex:1; }
+
+/* Overlay / Bottom-Sheet */
+.overlay{
+  position:fixed; inset:0; z-index:60;
+  background:rgba(4,8,7,.72); backdrop-filter:blur(3px);
+  display:flex; align-items:flex-end; justify-content:center;
+  animation:fade-in .2s var(--ease);
+}
+.overlay-sheet{
+  width:100%; max-width:var(--maxw);
+  background:var(--bg-2); border:1px solid var(--line);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;
+  padding:var(--sp-5) var(--sp-4) calc(var(--sp-5) + env(safe-area-inset-bottom));
+  max-height:86dvh; overflow-y:auto;
+  animation:sheet-up .28s var(--ease);
+}
+@keyframes fade-in{ from{opacity:0} to{opacity:1} }
+@keyframes sheet-up{ from{ transform:translateY(24px); opacity:.6 } to{ transform:none; opacity:1 } }
+
+.toasts{
+  position:fixed; left:50%; bottom:calc(var(--sp-5) + env(safe-area-inset-bottom));
+  transform:translateX(-50%); z-index:80;
+  display:flex; flex-direction:column; gap:var(--sp-2); align-items:center;
+  pointer-events:none; width:max-content; max-width:92vw;
+}
+
+@media (min-width:700px){
+  .screen{ padding-top:var(--sp-6); }
+  .overlay{ align-items:center; }
+  .overlay-sheet{ border-radius:var(--r-xl); max-height:80dvh; }
+  .actionbar{ position:static; margin:var(--sp-5) 0 0; padding:0; background:none; }
+}

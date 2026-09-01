@@ -1,0 +1,77 @@
+# ══════════════════════════════════════════════════════════════════════
+# Automatische Veröffentlichung auf GitHub Pages
+# ══════════════════════════════════════════════════════════════════════
+#
+# Läuft bei jedem Push auf main: GitHub baut mit build.ps1 und stellt
+# das Ergebnis online. Der gebaute Ordner dist/ muss also nicht ins
+# Repository — es gibt trotzdem nur eine einzige aktuelle Version.
+#
+# Einmalige Einrichtung im Browser:
+#   Repository → Settings → Pages → "Source" auf "GitHub Actions"
+#
+# Danach genügt für jede Änderung:
+#   git add -A && git commit -m "…" && git push
+#
+# Die Seite liegt anschliessend unter
+#   https://<benutzername>.github.io/<repository>/
+#
+# Läuft auf windows-latest, weil build.ps1 PowerShell ist — dieselbe
+# Datei, die auch lokal benutzt wird. Ein zweiter Build-Weg für Linux
+# wäre eine zweite Sache, die auseinanderlaufen kann.
+
+name: Veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:      # erlaubt den Start von Hand über die Actions-Seite
+
+# Nur Leserechte am Code, Schreibrechte ausschliesslich für Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Läuft ein Deployment schon, wird es nicht abgebrochen — die neuere
+# Version kommt danach dran.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bauen:
+    runs-on: windows-latest
+    steps:
+      - name: Code holen
+        uses: actions/checkout@v4
+
+      - name: Build ausführen
+        shell: powershell
+        run: .\build.ps1
+
+      - name: Ergebnis prüfen
+        shell: powershell
+        run: |
+          foreach ($f in 'index.html','a.js','g.js','a.css') {
+            if (-not (Test-Path "dist\$f")) { throw "dist\$f fehlt" }
+          }
+          Write-Host "dist\ vollständig"
+
+      - name: Pages vorbereiten
+        uses: actions/configure-pages@v5
+
+      - name: dist hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  veroeffentlichen:
+    needs: bauen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Live schalten
+        id: deployment
+        uses: actions/deploy-pages@v4

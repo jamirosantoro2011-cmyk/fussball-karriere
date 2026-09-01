@@ -1,0 +1,19 @@
+# Build-Ergebnis — wird bei jedem Upload neu erzeugt.
+#
+# Bei GitHub Pages über die mitgelieferte Action (.github/workflows/
+# pages.yml) baut GitHub selbst; dist\ gehört dann NICHT ins Repo.
+#
+# Wer dist\ lieber von Hand hochlädt (Cloudflare Pages per Drag & Drop),
+# lässt die Zeile trotzdem stehen — die Dateien werden ja lokal erzeugt.
+dist/
+
+# Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Editoren
+.vscode/
+.idea/
+*.swp
+*~

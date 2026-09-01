@@ -1,0 +1,135 @@
+/* ── Zugangssperre ─────────────────────────────────────────────────────
+   Eigene Datei, weil sie **vor** layout.css und components.css geladen
+   wird — die kommen erst nach dem richtigen Code. Nur tokens.css liegt
+   davor, deshalb sind die Variablen hier verfügbar.                  */
+
+body.is-locked{
+  margin:0;
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+}
+body.is-locked #app{ display:none; }
+
+.gate{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:var(--sp-5);
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(158,242,91,.10), transparent 60%),
+    radial-gradient(90% 60% at 50% 110%, rgba(53,227,172,.07), transparent 60%),
+    var(--bg);
+}
+
+/* Flutlichtstreifen im Hintergrund — dieselbe Bildsprache wie im Spiel,
+   rein aus CSS, ohne Bilddatei. */
+.gate::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(
+    100deg, transparent 0 38px, rgba(233,243,239,.014) 38px 76px);
+  mask-image:radial-gradient(70% 60% at 50% 40%, #000 30%, transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 40%, #000 30%, transparent 100%);
+}
+
+.gate-card{
+  position:relative;
+  width:100%; max-width:390px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r-xl);
+  padding:var(--sp-6) var(--sp-5) var(--sp-5);
+  box-shadow:var(--shadow-3);
+  text-align:center;
+}
+
+/* Ball aus reinem CSS — kein Bild, keine fremde Vorlage */
+.gate-mark{
+  width:56px; height:56px; margin:0 auto var(--sp-4);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 28%, #f4faf7 0 22%, transparent 23%),
+    radial-gradient(circle at 70% 62%, #0e1614 0 17%, transparent 18%),
+    radial-gradient(circle at 26% 72%, #0e1614 0 13%, transparent 14%),
+    radial-gradient(circle at 74% 24%, #0e1614 0 11%, transparent 12%),
+    linear-gradient(160deg, var(--accent), var(--accent-2));
+  box-shadow:0 8px 26px rgba(158,242,91,.22), inset 0 -6px 14px rgba(0,0,0,.35);
+}
+
+.gate-title{
+  margin:0;
+  font-family:var(--font-head); font-weight:800;
+  font-size:1.35rem; line-height:1.2; letter-spacing:-.01em;
+}
+.gate-sub{
+  margin:var(--sp-2) 0 var(--sp-5);
+  font-size:.88rem; line-height:1.5; color:var(--text-2);
+}
+
+.gate-field{ display:flex; flex-direction:column; gap:var(--sp-3); }
+
+.gate-input{
+  width:100%; box-sizing:border-box;
+  padding:14px 16px;
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  color:var(--text);
+  font-family:var(--font-head);
+  font-size:1.05rem; font-weight:700;
+  letter-spacing:.14em; text-align:center; text-transform:uppercase;
+}
+.gate-input::placeholder{
+  color:var(--muted); font-weight:600; letter-spacing:.1em;
+}
+.gate-input:focus{
+  outline:none; border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(158,242,91,.13);
+}
+.gate-input:disabled{ opacity:.55; }
+
+.gate-btn{
+  width:100%; padding:14px 18px;
+  border:1px solid transparent; border-radius:var(--r-md);
+  background:linear-gradient(180deg, var(--accent), #7fd83f);
+  color:var(--accent-ink);
+  font-family:var(--font-body); font-weight:800; font-size:.98rem;
+  cursor:pointer; transition:.16s var(--ease, ease);
+  box-shadow:0 6px 18px rgba(158,242,91,.18);
+}
+.gate-btn:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 10px 26px rgba(158,242,91,.28); }
+.gate-btn:active:not(:disabled){ transform:translateY(0) scale(.99); }
+.gate-btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+
+.gate-msg{
+  min-height:1.15rem; margin:var(--sp-3) 0 0;
+  font-size:.82rem; font-weight:600; color:var(--muted);
+}
+.gate-msg[data-tone="bad"]{ color:var(--bad); }
+.gate-msg[data-tone="good"]{ color:var(--good); }
+
+.gate-foot{
+  margin:var(--sp-5) 0 0;
+  font-size:.72rem; color:var(--muted); line-height:1.5;
+}
+
+/* Falscher Code: kurzes Kopfschütteln */
+.gate-card.is-wrong{ animation:gate-shake .34s ease; }
+@keyframes gate-shake{
+  0%,100%{ transform:translateX(0); }
+  18%{ transform:translateX(-7px); }
+  38%{ transform:translateX(6px); }
+  58%{ transform:translateX(-4px); }
+  78%{ transform:translateX(3px); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .gate-card.is-wrong{ animation:none; }
+  .gate-btn:hover:not(:disabled){ transform:none; }
+}
+
+@media (max-width: 380px){
+  .gate-card{ padding:var(--sp-5) var(--sp-4) var(--sp-4); }
+  .gate-input{ letter-spacing:.08em; font-size:1rem; }
+}
